@@ -1,5 +1,10 @@
+from DataBase import DataSource
 import numpy
-#
-# MyBotWilliam
-# This is a bot with AI connected to a DB and with Web Scraping
+
+ds = DataSource.data()
+
+# ds.insert_request("test", "testing")
+# ds.insert_response("test", "OK")
+
+print(ds.get_answers_by_tag("test"))
 
