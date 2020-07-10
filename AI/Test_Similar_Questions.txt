@@ -1,0 +1,30 @@
+How to close the android keyboard?
+Git problems: how to merge?
+I want to rename a git branch
+Check an email address validity in JavaScript
+How to distinguish between URI, URL and URN
+Not use not null statements
+Compound assignments in Java don't require casting?
+Which I should implement: var functionName = function() or function functionName()
+Revert changes in a file to a specific version?
+Is possible in Git clone all branches?
+"-->" in C++
+What are "px", "dip", "dp" and "sp"?
+String or string in C#?
+Which is the maximum allowed length in a URL?
+Docker vs a virtual machine?
+Obtain a timestamp in JavaScript
+Create a nested directory
+Remove items from arrays
+Stack vs heap
+Undo commits in Git
+Check remote Git branch
+Command with Python
+Modify properties from an object in JavaScript
+Static methods vs class methods
+Clone an object in JavaScript
+Why should I use "use strict" in JavaScript
+Push a new branch to a remote Git
+Is possible to merge two dictionaries in a single expression? (Python)
+Substring method in a Python string
+Python metaclasses: what are and how to use them
