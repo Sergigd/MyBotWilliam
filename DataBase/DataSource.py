@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import csv
 
 
 class data(object):
@@ -26,7 +27,11 @@ class data(object):
 
     def get_answers_by_id(self, id_):
         self.cursor.execute("SELECT answer FROM answers WHERE id=:id", {'id': id_})
-        return self.cursor.fetchall()
+        return self.cursor.fetchone()
+
+    def get_title_by_id(self, id_):
+        self.cursor.execute("SELECT title FROM questions WHERE id=:id", {'id': id_})
+        return self.cursor.fetchone()
 
     def is_question_title_in_DB(self, title):
         self.cursor.execute("SELECT id FROM questions WHERE title=:title", {'title': title})
@@ -39,3 +44,19 @@ class data(object):
         self.cursor.execute("SELECT COUNT(*) FROM answers")
         return self.cursor.fetchone()[0]
 
+    def get_questions_DB(self):
+        questions_db = []
+        id_ = 1
+        while id_ < self.get_last_id():
+            questions_db.append(str(self.get_title_by_id(id_)[0]))
+            id_ += 1
+        return questions_db
+
+    def get_questions_and_id_dB(self):
+        questions_db = []
+        id_ = 1
+        while id_ < self.get_last_id():
+            question = [str(self.get_title_by_id(id_)[0]), id_]
+            questions_db.append(question)
+            id_ += 1
+        return questions_db

@@ -43,7 +43,7 @@ def get_single_from_request(request, number):
     return item[number]
 
 
-def get_number_random(skip):
+def get_number_random(skip): # skip is a vector which contains all the index of the requests alredy used
     for _ in range(1, 150):
         number = random.randint(1, 98)
         if not skip.__contains__(number):

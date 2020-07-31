@@ -2,12 +2,13 @@ from bs4 import BeautifulSoup
 import requests
 
 # question = input("What do you want?\n")
-# Con una funcion convertir la pregunta en codigo de la busqueda( mezcla de unicode y letras)
+# Con una función convertir la pregunta en codigo de la busqueda( mezcla de unicode y letras)
 
 question = "AttributeError: 'NoneType' object has no attribute 'clear'"
+q2 = "IndexError: list index out of range"
 
 
-def textToSearch(sentence="Testing"):
+def textToSearch(sentence="Testing"):  # =Testing para asegurar que sea un string y me deje hacer el replace
     sentence = sentence.replace("%", "%25", -1)
 
     sentence = sentence.replace("'", "%27", -1)
@@ -43,4 +44,3 @@ print(soup.prettify())
 # value.string = question
 # print(value)
 #
-
