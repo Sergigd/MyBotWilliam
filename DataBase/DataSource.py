@@ -1,12 +1,16 @@
 import sqlite3
 import os
+import rootpath
 import csv
 
 
 class data(object):
     def __init__(self):
-        root_dir = os.path.dirname(os.path.abspath(os.curdir))
+        root_dir = rootpath.detect()
+        # root_dir = os.path.dirname(os.path.abspath(os.curdir))
+        # print(root_dir)
         self.path = os.path.join(root_dir, "DataBase", "chatBot.db")
+        # print(self.path)
         self.conn = sqlite3.connect(self.path)
         self.cursor = self.conn.cursor()
 

@@ -3,13 +3,15 @@ from DataBase import DataSource
 from nltk.tokenize import word_tokenize
 from nltk.stem.snowball import SnowballStemmer
 from nltk.corpus import stopwords
+from sklearn.metrics import jaccard_score
 
 
 def read_questions_similar():
     # Reading the data
     questions_similar = []
     root_dir = os.path.dirname(os.path.abspath(os.curdir))
-    path = os.path.join(root_dir, "AI", "NLP", "Test_Similar_Questions.txt")
+    # path = os.path.join(root_dir, "AI", "Distance", "Test_Similar_Questions.txt")
+    path = os.path.join(root_dir, "Distance", "Test_Similar_Questions.txt")
     with open(path) as f:
         for line in f:
             line = str(line).lower()
@@ -63,30 +65,54 @@ def cosine_similarity(title_prep, question_prep):
     cosine = c / float((sum(vector_title) * sum(vector_question)) ** 0.5)
     return cosine
 
+#
+# def jaccard2_similarity(title_prep, question_prep):
+#     print(title_prep)
+#     print(question_prep)
+#
+#     score = jaccard_score(title_prep, question_prep, average="weighted")
+#     print(score)
+#     return score
 
-def Select_Response(title, questions):
+
+def jaccard_similarity(list1, list2):
+    intersection = len(list(set(list1).intersection(list2)))
+    union = (len(list1) + len(list2)) - intersection
+    return float(intersection) / union
+
+
+def Select_Response(title, questions, method="cosine"):
     title_prepared = prepare_sentence(title)
 
-    # cosine similarity:
-    cosine_indexes = []
-    for question in questions:
-        question_prepared = prepare_sentence(question)
-        cosine = cosine_similarity(title_prepared, question_prepared)
-        cosine_indexes.append(cosine)
+    similarity_indexes = []
+    if method == "cosine":
+        # cosine similarity:
+        for question in questions:
+            question_prepared = prepare_sentence(question)
+            cosine = cosine_similarity(title_prepared, question_prepared)
+            similarity_indexes.append(cosine)
+    elif method == "jaccard":
+        for question in questions:
+            question_prepared = prepare_sentence(question)
+            jaccard = jaccard_similarity(title_prepared, question_prepared)
+            similarity_indexes.append(jaccard)
+    else:
+        print("There is no method called: ", method)
+        return -1
 
-    print(cosine_indexes)
-    maximum = max(cosine_indexes)
+    print(similarity_indexes)
+    maximum = max(similarity_indexes)
     print("Max similarity: ", maximum)
 
     if maximum < 0.3:
         print(title)
         print("No coincidence.")
     else:
-        index = cosine_indexes.index(maximum)
+        index = similarity_indexes.index(maximum)
 
         print(title)
         print(questions[index])
-        print(get_answer_by_id(_id=index+1))
+        print(get_answer_by_id(_id=index + 1))
 
 
 def extract_comas(sentence):
