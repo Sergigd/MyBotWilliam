@@ -6,7 +6,8 @@ from AI.Distance import Distance_Methods as nlp
 # Files:
 # Path
 root_dir = os.path.dirname(os.path.abspath(os.curdir))
-path = os.path.join(root_dir, "AI", "DecisionTree")
+# path = os.path.join(root_dir, "AI", "DecisionTree")
+path = os.path.join(root_dir, "DecisionTree")
 # Count
 file_model = os.path.join(path, "Models", "DT_Count_v2.pkl")
 file_vector = os.path.join(path, "Vectorizer", "CountVectorizer.pkl")

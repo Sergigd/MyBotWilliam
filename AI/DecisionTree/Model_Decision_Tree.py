@@ -26,7 +26,7 @@ X = vectorizer.fit_transform(questions_db)
 
 # # Saving CountVectorizer
 import pickle
-filename = "DecisionTree/Vectorizer/CountVectorizer.pkl"
+filename = "/DecisionTree/Vectorizer/CountVectorizer.pkl"
 pickle.dump(vectorizer, open(filename, 'wb'))
 
 results = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names())
@@ -82,7 +82,7 @@ yes_no = input('Save?:')
 if yes_no == 'y':
     # Save to file in the current working directory
     import pickle
-    filename = "Models/DT_Tfidf_v1.pkl"
+    filename = "Models/DT_Count_v5.pkl"
     pickle.dump(clf, open(filename, 'wb'))
 
 # Test
