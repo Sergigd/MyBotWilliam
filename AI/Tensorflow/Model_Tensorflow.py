@@ -42,8 +42,9 @@ model.fit(X, output_y, epochs=150, batch_size=15, verbose=1)
 score = model.evaluate(X, output_y, batch_size=15)
 
 # Test
-text = vectorizer.transform(["how to merge"])
-test = model.predict(text)
+text = ["how to merge"]
+transform = vectorizer.transform(text)
+test = model.predict(transform)
 print(test)
 
 max_test = max(test[0])
@@ -54,8 +55,8 @@ for index, value in enumerate(test[0]):
 
 print("Value = ", value)
 print("Index = ", index)
-print("Text = ", text)
-title = data.get_title_by_id(index)
+print("Text = ", text[0])
+title = data.get_title_by_id(index)[0]
 print("Result = ", title)
 
 
@@ -63,5 +64,5 @@ print("Result = ", title)
 yes_no = input('Save?:')
 if yes_no == 'y':
     # Save to file in the current working directory
-    model.save("Models/TFKeras_Count_v1.h5")
+    model.save("Models/TFKeras_Count_v3.h5")
 
