@@ -4,7 +4,6 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 import DataBase.DataSource
-import numpy as np
 
 # In this script we will generate different Decision Trees Models.
 

@@ -1,6 +1,6 @@
 import pickle
 import os
-from AI.Distance import Distance_Methods as nlp
+from AI.Distance import Distance_Methods as Nlp
 
 
 # Files:
@@ -16,7 +16,7 @@ file_vector = os.path.join(path, "Vectorizer", "CountVectorizer.pkl")
 
 
 # Loading Test Questions from Test_Similar_Questions.txt
-questions_similar = nlp.read_questions_similar()
+questions_similar = Nlp.read_questions_similar()
 
 # Loading Decision Tree Model
 loaded_model = pickle.load(open(file_model, 'rb'))

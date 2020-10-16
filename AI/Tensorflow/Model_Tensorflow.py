@@ -1,7 +1,5 @@
-from sklearn import datasets
 from tensorflow import keras
 from tensorflow.keras.layers import Dense
-import pandas as pd
 import DataBase.DataSource
 
 
@@ -63,6 +61,4 @@ print("Result = ", title)
 # Saving model
 yes_no = input('Save?:')
 if yes_no == 'y':
-    # Save to file in the current working directory
     model.save("Models/TFKeras_Count_v3.h5")
-

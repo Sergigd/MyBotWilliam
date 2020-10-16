@@ -81,7 +81,7 @@ def jaccard_similarity(list1, list2):
     return float(intersection) / union
 
 
-def Select_Response(title, questions, method="cosine"):
+def select_response(title, questions, method="cosine"):
     title_prepared = prepare_sentence(title)
 
     similarity_indexes = []

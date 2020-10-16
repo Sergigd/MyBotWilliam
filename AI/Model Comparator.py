@@ -1,6 +1,6 @@
 import pickle
 import os
-from AI.Distance import Distance_Methods as nlp
+from AI.Distance import Distance_Methods as Nlp
 from tensorflow import keras
 
 # In this script we'll compare all the models in AI in order to check which model has more accuracy.
@@ -16,13 +16,13 @@ path_TFK = os.path.join(path_AI, "Tensorflow", "Models")
 path_list = [path_DT, path_NN, path_NN]
 
 # Loading Test Questions from Test_Similar_Questions.txt
-questions_similar = nlp.read_questions_similar()
+questions_similar = Nlp.read_questions_similar()
 
 # Get the accuracy for each model: model, good, attempts
+models_accuracy = []
 for path in path_list:
     # Files:
     models_list = os.listdir(path)
-    models_accuracy = []
 
     if path.__contains__("DecisionTree"):
         folder = "DecisionTree"

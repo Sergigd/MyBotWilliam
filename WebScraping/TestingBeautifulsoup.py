@@ -35,8 +35,11 @@ def textToSearch(sentence="Testing"):  # =Testing para asegurar que sea un strin
 question = textToSearch(question)
 
 source = requests.get("https://stackoverflow.com/search?q={value}".format(value=question)).text
+source = requests.get("https://stackoverflow.com/questions/12051/calling-the-base-constructor-in-c-sharp").text
 soup = BeautifulSoup(source, "lxml")
-print(soup.prettify())
+answer = soup.find("div", class_="answer accepted-answer")
+t = answer.find("div", class_="s-prose js-post-body")
+print(t.get_text())
 
 # div = soup.find("div", class_="ps-relative")
 # find_input = div.find("input")
