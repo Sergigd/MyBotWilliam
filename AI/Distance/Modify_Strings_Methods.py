@@ -23,6 +23,14 @@ def text_to_search(sentence="Testing"):  # =Testing para asegurar que sea un str
     return sentence
 
 
+def url_changer_text(sentence="Testing"):
+    sentence = sentence.replace(" ", "%20", -1)
+    sentence = sentence.replace(".", "", -1)
+    sentence = sentence.replace("#", "", -1)
+
+    return "https://web-hobbies.com/en/tools/sentences-changer-generator/?text=" + sentence + \
+               "&indice=0&isCapital=false&PosNeg=1"
+
 def modify_title(sentence="Testing"):
     sentence = sentence.replace('&quot;', '\"')
     sentence = sentence.replace("&#39;", "'", -1)

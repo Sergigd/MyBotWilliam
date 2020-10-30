@@ -8,7 +8,8 @@ import DataBase.DataSource
 # In this script we will generate different Decision Trees Models.
 
 # Load questions from DB
-data = DataBase.DataSource.data()
+# data = DataBase.DataSource.data("chatBot.db")
+data = DataBase.DataSource.data("english_DB.db")
 questions_and_id_db = data.get_questions_and_id_dB()
 
 questions_db = []
@@ -25,7 +26,7 @@ X = vectorizer.fit_transform(questions_db)
 
 # # Saving CountVectorizer
 import pickle
-filename = "/DecisionTree/Vectorizer/CountVectorizer.pkl"
+filename = "Vectorizer/CountVectorizer.pkl"
 pickle.dump(vectorizer, open(filename, 'wb'))
 
 results = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names())
@@ -33,7 +34,7 @@ results['Question_id'] = y  # Concatenate X and y
 
 # Saving Count_Results.csv
 root_dir = os.path.dirname(os.path.abspath(os.curdir))
-path = os.path.join(root_dir, "AI", "DecisionTree", "CSV_Results", "Count_Results.csv")
+path = os.path.join(root_dir, "DecisionTree", "CSV_Results", "Count_Results.csv")
 header = vectorizer.get_feature_names()
 header.append("Question_id")
 results.to_csv(path_or_buf=path, header=header, index=False)
@@ -71,17 +72,17 @@ print(classification_report(y_test, y_pred))
 score = clf.score(X_test, y_test)
 print("Score: ", score)
 # Print model.results
-from sklearn import tree
-from matplotlib import pyplot as plt
-tree.plot_tree(clf, filled=True)
-plt.show()
+# from sklearn import tree
+# from matplotlib import pyplot as plt
+# tree.plot_tree(clf, filled=True)
+# plt.show()
 
 # Saving model
 yes_no = input('Save?:')
 if yes_no == 'y':
     # Save to file in the current working directory
     import pickle
-    filename = "Models/DT_Count_v5.pkl"
+    filename = "Models/DT_Count_v2-1.pkl"
     pickle.dump(clf, open(filename, 'wb'))
 
 # Test

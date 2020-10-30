@@ -45,12 +45,15 @@ def prepare_sentence(sentence):
 
 
 def cosine_similarity(title_prep, question_prep):
+
     vector_title = []
     vector_question = []
     r_vector = set().union(*[tuple(title_prep), tuple(question_prep)])
+
+    # create a vector with 1 and 0
     for w in r_vector:
         if w in title_prep:
-            vector_title.append(1)  # create a vector
+            vector_title.append(1)
         else:
             vector_title.append(0)
         if w in question_prep:
@@ -58,8 +61,8 @@ def cosine_similarity(title_prep, question_prep):
         else:
             vector_question.append(0)
 
-    c = 0
     # cosine formula: Similarity = (A.B) / (||A||.||B||) where A and B are vectors.
+    c = 0
     for i in range(len(r_vector)):
         c += vector_title[i] * vector_question[i]
     cosine = c / float((sum(vector_title) * sum(vector_question)) ** 0.5)

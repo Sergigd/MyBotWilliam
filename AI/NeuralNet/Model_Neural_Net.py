@@ -8,7 +8,7 @@ import DataBase.DataSource
 # In this script we will generate different NeuralNet Models.
 
 # Load questions from DB
-data = DataBase.DataSource.data()
+data = DataBase.DataSource.data("chatBot.db")
 questions_and_id_db = data.get_questions_and_id_dB()
 
 questions_db = []

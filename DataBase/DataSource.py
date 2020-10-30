@@ -64,3 +64,12 @@ class data(object):
             questions_db.append(question)
             id_ += 1
         return questions_db
+
+    def get_id_of_first_extended_question_null(self):
+        self.cursor.execute("SELECT id FROM questions WHERE generated_title is NULL")
+        return self.cursor.fetchone()[0]
+
+    def update_extended_question(self, id_, text):
+        with self.conn:
+            # self.cursor.execute("UPDATE questions SET generated_title=NULL WHERE generated_title=''")
+            self.cursor.execute("UPDATE questions SET generated_title=:text WHERE id=:id_", {'text': text, 'id_': id_})
