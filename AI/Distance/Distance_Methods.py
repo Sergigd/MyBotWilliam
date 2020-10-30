@@ -78,9 +78,9 @@ def cosine_similarity(title_prep, question_prep):
 #     return score
 
 
-def jaccard_similarity(list1, list2):
-    intersection = len(list(set(list1).intersection(list2)))
-    union = (len(list1) + len(list2)) - intersection
+def jaccard_similarity(title_prep, question_prep):
+    intersection = len(list(set(title_prep).intersection(question_prep)))
+    union = (len(title_prep) + len(question_prep)) - intersection
     return float(intersection) / union
 
 
