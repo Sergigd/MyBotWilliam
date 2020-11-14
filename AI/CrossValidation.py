@@ -12,7 +12,7 @@ from numpy import where
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split, RepeatedStratifiedKFold
 from sklearn.tree import DecisionTreeClassifier
-import DataBase.DataSource
+import DataBase.DB
 from sklearn.model_selection import cross_val_score
 from numpy import mean
 
@@ -48,7 +48,7 @@ from numpy import mean
 # In this script we will generate different Decision Trees Models.
 
 # Load questions from DB
-data = DataBase.DataSource.data("english_DB.db")
+data = DataBase.DB.MyData("english_DB.db")
 questions_and_id_db = data.get_questions_and_id_dB()
 
 questions_db = []
@@ -83,19 +83,19 @@ k_values = [1, 2, 3, 4, 5, 6, 7]
 
 # for k in k_values:
     # define pipeline
-# model = DecisionTreeClassifier()
-overSample = SMOTE()
+model = DecisionTreeClassifier()
+overSample = SMOTE(sampling_strategy='all')
     # for _ in k_values:
         # steps = [('over', over), ('model', model)]
 X_, y_ = overSample.fit_resample(X, y)
 
         # pipeline = Pipeline(steps=steps)
     # evaluate pipeline
-    # cv = RepeatedStratifiedKFold(n_splits=4, n_repeats=3, random_state=1)
-    # scores = cross_val_score(pipeline, X, y, scoring='roc_auc', cv=cv, n_jobs=-1)
-    # score = mean(scores)
-    # print('> k=%d, Mean ROC AUC: %.3f' % (k, score))
-
+cv = RepeatedStratifiedKFold(n_splits=3, n_repeats=3, random_state=1)
+scores = cross_val_score(model, X_, y_, scoring='roc_auc', cv=cv, n_jobs=-1)
+score = mean(scores)
+print('Mean ROC AUC: %.3f' % (score))
+#
 # # Saving Count_Results.csv
 # root_dir = os.path.dirname(os.path.abspath(os.curdir))
 # path = os.path.join(root_dir, "AI", "DecisionTree", "CSV_Results", "Count_Results.csv")

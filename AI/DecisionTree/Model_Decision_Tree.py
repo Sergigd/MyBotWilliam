@@ -3,13 +3,13 @@ import os
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
-import DataBase.DataSource
+import DataBase.DB
 
 # In this script we will generate different Decision Trees Models.
 
 # Load questions from DB
 # data = DataBase.DataSource.data("chatBot.db")
-data = DataBase.DataSource.data("english_DB.db")
+data = DataBase.DB.MyData("english_DB.db")
 questions_and_id_db = data.get_questions_and_id_dB()
 
 questions_db = []
@@ -86,7 +86,7 @@ if yes_no == 'y':
     pickle.dump(clf, open(filename, 'wb'))
 
 # Test
-text = ["javascript"]
+text = ["constructor"]
 test = vectorizer.transform(text)
 test2 = clf.predict(test)
 print(test)

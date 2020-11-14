@@ -1,10 +1,10 @@
 from tensorflow import keras
 from tensorflow.keras.layers import Dense
-import DataBase.DataSource
+import DataBase.DB
 
 
 # Load questions from DB
-data = DataBase.DataSource.data()
+data = DataBase.DB.MyData()
 questions_and_id_db = data.get_questions_and_id_dB()
 questions_db = []
 y = []

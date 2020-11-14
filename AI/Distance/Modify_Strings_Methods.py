@@ -24,6 +24,7 @@ def text_to_search(sentence="Testing"):  # =Testing para asegurar que sea un str
 
 
 def url_changer_text(sentence="Testing"):
+    sentence = sentence.replace("%", " percent", -1)
     sentence = sentence.replace(" ", "%20", -1)
     sentence = sentence.replace(".", "", -1)
     sentence = sentence.replace("#", "", -1)

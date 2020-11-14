@@ -1,5 +1,5 @@
 import os
-from DataBase import DataSource
+from DataBase import DB
 from nltk.tokenize import word_tokenize
 from nltk.stem.snowball import SnowballStemmer
 from nltk.corpus import stopwords
@@ -10,7 +10,7 @@ def read_questions_similar():
     # Reading the data
     questions_similar = []
     root_dir = os.path.dirname(os.path.abspath(os.curdir))
-    path = os.path.join(root_dir, "AI", "Distance", "Test_Similar_Questions.txt")
+    path = os.path.join(root_dir, "Distance", "Test_Similar_Questions.txt")
     # path = os.path.join(root_dir, "Distance", "Test_Similar_Questions.txt")
     with open(path) as f:
         for line in f:
@@ -19,8 +19,8 @@ def read_questions_similar():
     return questions_similar
 
 
-def get_answer_by_id(_id):
-    data = DataSource.data()
+def get_answer_by_id(_id, name_db):
+    data = DB.MyData(name_db)
     return str(data.get_answers_by_id(_id)[0])
 
 
@@ -84,7 +84,7 @@ def jaccard_similarity(title_prep, question_prep):
     return float(intersection) / union
 
 
-def select_response(title, questions, method="cosine"):
+def select_response(title, questions, method="cosine", name_db=""):
     title_prepared = prepare_sentence(title)
 
     similarity_indexes = []
@@ -115,7 +115,7 @@ def select_response(title, questions, method="cosine"):
 
         print(title)
         print(questions[index])
-        print(get_answer_by_id(_id=index + 1))
+        # print(get_answer_by_id(_id=index + 1, name_db=name_db))
 
 
 def extract_comas(sentence):

@@ -3,10 +3,9 @@ import json
 import random
 import time
 from bs4 import BeautifulSoup
-from DataBase import DataSource
+from DataBase import DB
 
 
-# NO more than 30 requests a second, daily 10.000 requests
 # Methods
 def get_url_questions():
     # return """https://api.stackexchange.com/2.2/questions?pagesize=99&order=desc&sort=votes&site=stackoverflow"""

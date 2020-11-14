@@ -3,12 +3,12 @@ import os
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
-import DataBase.DataSource
+import DataBase.DB
 
 # In this script we will generate different NeuralNet Models.
 
 # Load questions from DB
-data = DataBase.DataSource.data("chatBot.db")
+data = DataBase.DB.MyData("chatBot.db")
 questions_and_id_db = data.get_questions_and_id_dB()
 
 questions_db = []

@@ -1,7 +1,7 @@
-from DataBase import DataSource
+from DataBase import DB
 import numpy
 
-ds = DataSource.data()
+ds = DB.MyData()
 
 # ds.insert_request("test", "testing")
 # ds.insert_response("test", "OK")
