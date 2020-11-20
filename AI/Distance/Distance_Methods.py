@@ -3,15 +3,16 @@ from DataBase import DB
 from nltk.tokenize import word_tokenize
 from nltk.stem.snowball import SnowballStemmer
 from nltk.corpus import stopwords
-from sklearn.metrics import jaccard_score
 
 
 def read_questions_similar():
     # Reading the data
     questions_similar = []
     root_dir = os.path.dirname(os.path.abspath(os.curdir))
-    path = os.path.join(root_dir, "Distance", "Test_Similar_Questions.txt")
-    # path = os.path.join(root_dir, "Distance", "Test_Similar_Questions.txt")
+    if root_dir.__contains__("AI"):
+        path = os.path.join(root_dir, "Distance", "Test_Similar_Questions.txt")
+    else:
+        path = os.path.join(root_dir, "AI", "Distance", "Test_Similar_Questions.txt")
     with open(path) as f:
         for line in f:
             line = str(line).lower()
@@ -84,7 +85,7 @@ def jaccard_similarity(title_prep, question_prep):
     return float(intersection) / union
 
 
-def select_response(title, questions, method="cosine", name_db=""):
+def select_response(title, questions, method="cosine"):
     title_prepared = prepare_sentence(title)
 
     similarity_indexes = []

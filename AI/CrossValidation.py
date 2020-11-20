@@ -48,7 +48,7 @@ from numpy import mean
 # In this script we will generate different Decision Trees Models.
 
 # Load questions from DB
-data = DataBase.DB.MyData("english_DB.db")
+data = DataBase.DB.MyData("english_db.db")
 questions_and_id_db = data.get_questions_and_id_dB()
 
 questions_db = []

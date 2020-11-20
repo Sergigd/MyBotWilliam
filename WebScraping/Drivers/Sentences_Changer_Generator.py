@@ -1,6 +1,6 @@
 """
 In this script we will append text generated in https://web-hobbies.com/en/tools/sentences-changer-generator/ to our
-extended_english_DB.db in order to generate better models
+extended_english_db.db in order to generate better models
 """
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
@@ -19,7 +19,7 @@ root_dir = os.path.dirname(os.path.abspath(os.curdir))
 path_opera = os.path.join(root_dir, "Drivers", "operadriver.exe")
 
 # Database to append generated questions
-db = DB.MyData("extended_english_DB.db")
+db = DB.MyData("extended_english_db.db")
 
 throw_exception = []
 count = 0

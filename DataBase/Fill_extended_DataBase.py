@@ -4,7 +4,7 @@ from os import remove
 from AI.Distance import Modify_Strings_Methods as Modify
 
 # Main: fill 'english_DB' with questions of Stack's API. Looping over weeks and obtaining responded questions.
-data = DB.MyData("english_DB.db")
+data = DB.MyData("english_db.db")
 while data.get_last_id() < 10000:
     file_dates = "Stack_dates_en.txt"
     with open("Stack_dates_en.txt", 'r') as file:
@@ -70,7 +70,7 @@ while data.get_last_id() < 10000:
     # Fill DB with q&a:
     if questions_and_answers is not None:
         for question_and_answer in questions_and_answers:
-            data = DB.MyData("english_DB.db")
+            data = DB.MyData("english_db.db")
             if not data.is_question_title_in_DB(question_and_answer.title):
                 data.insert_question(id_=data.get_last_id() + 1,
                                      title=question_and_answer.title,

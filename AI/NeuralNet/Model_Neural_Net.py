@@ -8,7 +8,7 @@ import DataBase.DB
 # In this script we will generate different NeuralNet Models.
 
 # Load questions from DB
-data = DataBase.DB.MyData("chatBot.db")
+data = DataBase.DB.MyData("first_db.db")
 questions_and_id_db = data.get_questions_and_id_dB()
 
 questions_db = []
@@ -25,7 +25,7 @@ X = vectorizer.fit_transform(questions_db)
 
 # Saving CountVectorizer
 import pickle
-filename = "Vectorizer/CountVectorizer.pkl"
+filename = "Vectorizer/First_DataBase/CountVectorizer.pkl"
 pickle.dump(vectorizer, open(filename, 'wb'))
 
 results = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names())
@@ -40,8 +40,29 @@ results.to_csv(path_or_buf=path, header=header, index=False)
 results_id = results.pop("Question_id")
 
 
-# DecisionTreeClassifier()
-X_train, X_test, y_train, y_test = train_test_split(results, results_id, test_size=0.4, random_state=42)
+# # TFIDF
+# from sklearn.feature_extraction.text import TfidfVectorizer
+# vectorizer = TfidfVectorizer()
+# X = vectorizer.fit_transform(questions_db)
+#
+# # Saving TFIDFVectorizer
+# import pickle
+# filename = "Vectorizer/TFIDFVectorizer.pkl"
+# pickle.dump(vectorizer, open(filename, 'wb'))
+#
+# results = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names())
+# results['Question_id'] = y  # Concatenate X and y
+#
+# # Saving TFIDF_Results.csv
+# root_dir = os.path.dirname(os.path.abspath(os.curdir))
+# path = os.path.join(root_dir, "NeuralNet", "CSV_Results", "Count_Results.csv")
+# header = vectorizer.get_feature_names()
+# header.append("Question_id")
+# results.to_csv(path_or_buf=path, header=header, index=False)
+# results_id = results.pop("Question_id")
+
+# MLPClassifier()
+X_train, X_test, y_train, y_test = train_test_split(results, results_id, test_size=0.4, random_state=5)
 clf = MLPClassifier()
 clf = clf.fit(X_train, y_train)
 
@@ -51,12 +72,12 @@ score = clf.score(X_test, y_test)
 print("Score: ", score)
 
 # Saving model
-yes_no = input('Save?:')
-if yes_no == 'y':
+# yes_no = input('Save?:')
+# if yes_no == 'y':
     # Save to file in the current working directory
-    import pickle
-    filename = "Models/Neural_Count_v3.pkl"
-    pickle.dump(clf, open(filename, 'wb'))
+import pickle
+filename = "Models/First_DataBase/Neural_Count_v4.pkl"
+pickle.dump(clf, open(filename, 'wb'))
 
 # Test
 text = ["javascript"]

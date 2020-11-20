@@ -4,7 +4,7 @@ import DataBase.DB
 
 
 # Load questions from DB
-data = DataBase.DB.MyData()
+data = DataBase.DB.MyData("first_db.db")
 questions_and_id_db = data.get_questions_and_id_dB()
 questions_db = []
 y = []
@@ -12,22 +12,34 @@ for question in questions_and_id_db:
     questions_db.append(question[0])
     y.append(question[1])
 
-# Counting
-from sklearn.feature_extraction.text import CountVectorizer
-vectorizer = CountVectorizer(strip_accents='ascii', lowercase=True, stop_words='english')
+# # Counting
+# from sklearn.feature_extraction.text import CountVectorizer
+# vectorizer = CountVectorizer(strip_accents='ascii', lowercase=True, stop_words='english')
+# X = vectorizer.fit_transform(questions_db)
+#
+# # Saving CountVectorizer
+# import pickle
+# filename = "Vectorizer/CountVectorizer.pkl"
+# pickle.dump(vectorizer, open(filename, 'wb'))
+
+# TFIDF
+from sklearn.feature_extraction.text import TfidfVectorizer
+vectorizer = TfidfVectorizer()
 X = vectorizer.fit_transform(questions_db)
 
-# Saving CountVectorizer
+# Saving TFIDFVectorizer
 import pickle
-filename = "Vectorizer/CountVectorizer.pkl"
+filename = "Vectorizer/First_DataBase/TFIDFVectorizer.pkl"
 pickle.dump(vectorizer, open(filename, 'wb'))
 
+
 # Prepare outputs: a binary class matrix
-output_y = keras.utils.to_categorical(y)  # (results_id, 30)?
+output_y = keras.utils.to_categorical(y)
 
 # Create the model
 model = keras.models.Sequential()
-model.add(Dense(8, input_dim=95, activation='relu'))
+model.add(Dense(6, input_dim=122, activation='relu'))
+model.add(Dense(20, activation='relu'))
 model.add(Dense(31, activation='softmax'))
 
 # Compile model
@@ -58,7 +70,7 @@ title = data.get_title_by_id(index)[0]
 print("Result = ", title)
 
 
-# Saving model
-yes_no = input('Save?:')
-if yes_no == 'y':
-    model.save("Models/TFKeras_Count_v3.h5")
+# # Saving model
+# yes_no = input('Save?:')
+# if yes_no == 'y':
+model.save("Models/First_DataBase/TFKeras_Tfidf_v3.h5")

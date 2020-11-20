@@ -9,7 +9,7 @@ from tensorflow import keras
 root_dir = os.path.dirname(os.path.abspath(os.curdir))
 path = os.path.join(root_dir, "Tensorflow")
 # Count
-file_model = os.path.join(path, "Models", "TFKeras_Count_v3.h5")
+file_model = os.path.join(path, "Models", "First_DataBase", "TFKeras_Count_v3.h5")
 file_vector = os.path.join(path, "Vectorizer", "CountVectorizer.pkl")
 # # TF-IDF
 # file_model = os.path.join(path, "Models", "DT_Tfidf_v1.pkl")

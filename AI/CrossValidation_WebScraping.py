@@ -5,7 +5,7 @@ from numpy import mean
 import DataBase.DB
 
 # Duplicated_english.db has each question 10 times repeated: different ids = 1659; total questions = 18249
-data = DataBase.DB.MyData("extended_english_DB.db")
+data = DataBase.DB.MyData("extended_english_db.db")
 
 questions_db = data.get_all_titles()
 questions_extended = data.get_all_generated_titles()
