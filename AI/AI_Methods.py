@@ -61,8 +61,6 @@ def train_tensor_model(x, y, total_layers=2, first_dim_layer=1):
     # Get shape of vectors
     shape_y = np.shape(output_y)[1]
     shape_x = np.shape(x)[1]
-    print(shape_x)
-    print(shape_y)
     dimensional_step = int((shape_y - first_dim_layer) / total_layers)
 
     # Checks
