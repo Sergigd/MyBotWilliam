@@ -1,88 +1,31 @@
-import pandas as pd
-import os
-from sklearn.metrics import classification_report
-from sklearn.model_selection import train_test_split
-from sklearn.neural_network import MLPClassifier
 import DataBase.DB
+from AI import AI_Methods as A_m
+import time
 
 # In this script we will generate different NeuralNet Models.
+model_name = 'Neural'
+type_vector = 'Count'
+# type_vector = 'tfidf'
+name_db = "first_db.db"
 
-# Load questions from DB
+time_start = time.time()
+# # Load questions from DB
 data = DataBase.DB.MyData("first_db.db")
-questions_and_id_db = data.get_questions_and_id_dB()
 
-questions_db = []
-y = []
-for question in questions_and_id_db:
-    questions_db.append(question[0])
-    y.append(question[1])
+questions_db, y = A_m.load_questions_and_id(name_db)
 
+X, vectorizer = A_m.get_x_and_vector(questions_db, type_vector)
 
-# Counting
-from sklearn.feature_extraction.text import CountVectorizer
-vectorizer = CountVectorizer(strip_accents='ascii', lowercase=True, stop_words='english')
-X = vectorizer.fit_transform(questions_db)
+model = A_m.train_sk_model(X, y, vectorizer)
 
-# Saving CountVectorizer
-import pickle
-filename = "Vectorizer/First_DataBase/CountVectorizer.pkl"
-pickle.dump(vectorizer, open(filename, 'wb'))
+A_m.save_vector_and_model(vectorizer, model, model_name, type_vector, name_db)
+time_finish = time.time()
 
-results = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names())
-results['Question_id'] = y  # Concatenate X and y
-
-# Saving Count_Results.csv
-root_dir = os.path.dirname(os.path.abspath(os.curdir))
-path = os.path.join(root_dir, "NeuralNet", "CSV_Results", "Count_Results.csv")
-header = vectorizer.get_feature_names()
-header.append("Question_id")
-results.to_csv(path_or_buf=path, header=header, index=False)
-results_id = results.pop("Question_id")
-
-
-# # TFIDF
-# from sklearn.feature_extraction.text import TfidfVectorizer
-# vectorizer = TfidfVectorizer()
-# X = vectorizer.fit_transform(questions_db)
-#
-# # Saving TFIDFVectorizer
-# import pickle
-# filename = "Vectorizer/TFIDFVectorizer.pkl"
-# pickle.dump(vectorizer, open(filename, 'wb'))
-#
-# results = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names())
-# results['Question_id'] = y  # Concatenate X and y
-#
-# # Saving TFIDF_Results.csv
-# root_dir = os.path.dirname(os.path.abspath(os.curdir))
-# path = os.path.join(root_dir, "NeuralNet", "CSV_Results", "Count_Results.csv")
-# header = vectorizer.get_feature_names()
-# header.append("Question_id")
-# results.to_csv(path_or_buf=path, header=header, index=False)
-# results_id = results.pop("Question_id")
-
-# MLPClassifier()
-X_train, X_test, y_train, y_test = train_test_split(results, results_id, test_size=0.4, random_state=5)
-clf = MLPClassifier()
-clf = clf.fit(X_train, y_train)
-
-y_pred = clf.predict(X_test)
-print(classification_report(y_test, y_pred))
-score = clf.score(X_test, y_test)
-print("Score: ", score)
-
-# Saving model
-# yes_no = input('Save?:')
-# if yes_no == 'y':
-    # Save to file in the current working directory
-import pickle
-filename = "Models/First_DataBase/Neural_Count_v4.pkl"
-pickle.dump(clf, open(filename, 'wb'))
-
+print("Time = ", time_finish - time_start)
 # Test
-text = ["javascript"]
+text = ["merge in GitHub?"]
 test = vectorizer.transform(text)
-test2 = clf.predict(test)
+test2 = model.predict(test)
 print(test)
 print(test2)
 index_y = y[test2[0] - 1]

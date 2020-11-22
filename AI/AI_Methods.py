@@ -97,19 +97,23 @@ def train_tensor_model(x, y, total_layers=2, first_dim_layer=1):
 
 
 def save_vector_and_model(vectorizer, model, model_name, type_vector, name_db):
-    if model_name == 'Tree' or 'DT':
+    if model_name == 'Tree' or model_name == 'DT':
         type_model = 'DecisionTree'
         model_short = 'DT'
-    elif model_name == 'Neural' or model == 'NN':
+    elif model_name == 'Neural' or model_name == 'NN':
         type_model = 'NeuralNet'
         model_short = 'Neural'
+    elif model_name == 'TF' or model_name == 'Keras':
+        type_model = 'Tensorflow'
+        model_short = 'TFKeras'
     else:
         print("Model incorrect.")
         return -1
 
     if name_db == 'first_db.db':
-        type_db = 'First_DataBase'
-    elif model == 'english_db.db':
+        type_db = 'first_db'
+        # type_db = 'First_DataBase'
+    elif name_db == 'english_db.db':
         type_db = 'Extended_DataBase'
     else:
         print("No folder for this DataBase")
@@ -124,7 +128,8 @@ def save_vector_and_model(vectorizer, model, model_name, type_vector, name_db):
         return -1
 
     root_dir = rootpath.detect()
-    path_vector = os.path.join(root_dir, 'AI', type_model, 'Vectorizer', type_db, vector)
+    # path_vector = os.path.join(root_dir, 'AI', type_model, 'Vectorizer', type_db, vector)
+    path_vector = os.path.join(root_dir, 'AI', type_model, 'Vectorizer', "First_DataBase", vector)
     path_model = get_path_model(root_dir, type_model, model_short, type_db, type_vector)
 
     import pickle
