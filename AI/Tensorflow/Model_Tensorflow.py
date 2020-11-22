@@ -15,60 +15,11 @@ questions_db, y = A_m.load_questions_and_id(name_db)
 
 X, vectorizer = A_m.get_x_and_vector(questions_db, type_vector)
 
-model = A_m.train_tensor_model(X, y, total_layers=2, first_dim_layer=2)
+model = A_m.train_tensor_model(X, y, total_layers=2, first_dim_layer=20)
 if model == -1:
     print("Quit")
     quit()
 
-# A_m.save_vector_and_model(vectorizer, model, model_name, type_vector, name_db)
-
-
-#
-#
-# # Load questions from DB
-# data = DataBase.DB.MyData("first_db.db")
-# questions_and_id_db = data.get_questions_and_id_dB()
-# questions_db = []
-# y = []
-# for question in questions_and_id_db:
-#     questions_db.append(question[0])
-#     y.append(question[1])
-#
-# # # Counting
-# # from sklearn.feature_extraction.text import CountVectorizer
-# # vectorizer = CountVectorizer(strip_accents='ascii', lowercase=True, stop_words='english')
-# # X = vectorizer.fit_transform(questions_db)
-# #
-# # # Saving CountVectorizer
-# # import pickle
-# # filename = "Vectorizer/CountVectorizer.pkl"
-# # pickle.dump(vectorizer, open(filename, 'wb'))
-#
-# # TFIDF
-# from sklearn.feature_extraction.text import TfidfVectorizer
-# vectorizer = TfidfVectorizer()
-# X = vectorizer.fit_transform(questions_db)
-#
-# # # Saving TFIDFVectorizer
-# # import pickle
-# # filename = "Vectorizer/First_DataBase/TFIDFVectorizer.pkl"
-# # pickle.dump(vectorizer, open(filename, 'wb'))
-#
-#
-# # Prepare outputs: a binary class matrix
-# output_y = keras.utils.to_categorical(y)
-#
-# # Create the model
-# model = keras.models.Sequential()
-# model.add(Dense(6, input_dim=122, activation='relu'))
-# model.add(Dense(20, activation='relu'))
-# model.add(Dense(31, activation='softmax'))
-#
-# # Compile model
-# model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-#
-# # Fit the model
-# model.fit(X, output_y, epochs=150, batch_size=15, verbose=1)
 #
 # # Evaluate the model
 # score = model.evaluate(X, output_y, batch_size=15)

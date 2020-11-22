@@ -47,7 +47,7 @@ def train_sk_model(x, y, type_model='Tree'):
 
 def train_tensor_model(x, y, total_layers=2, first_dim_layer=1):
     # Check the optional inputs format
-    if total_layers is not int or first_dim_layer is not int:
+    if type(total_layers) is not int or type(first_dim_layer) is not int:
         print("Bad format.")
         return -1
 
@@ -61,6 +61,8 @@ def train_tensor_model(x, y, total_layers=2, first_dim_layer=1):
     # Get shape of vectors
     shape_y = np.shape(output_y)[1]
     shape_x = np.shape(x)[1]
+    print(shape_x)
+    print(shape_y)
     dimensional_step = int((shape_y - first_dim_layer) / total_layers)
 
     # Checks
