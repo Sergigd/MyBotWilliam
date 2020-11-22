@@ -30,17 +30,9 @@ def get_x_and_vector(questions_db, type_vectorizer='Count'):
         return x, vectorizer
 
 
-def train_model(x, y, vectorizer, type_model='Tree'):
-    import pandas as pd
-    results = pd.DataFrame(x.toarray(), columns=vectorizer.get_feature_names())
-    results['Question_id'] = y  # Concatenate X and y
-
-    header = vectorizer.get_feature_names()
-    header.append("Question_id")
-    results_id = results.pop("Question_id")
-
+def train_sk_model(x, y, type_model='Tree'):
     from sklearn.model_selection import train_test_split
-    x_train, x_test, y_train, y_test = train_test_split(results, results_id, test_size=0.4, random_state=42)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.4, random_state=42)
 
     if type_model == 'Tree':
         from sklearn.tree import DecisionTreeClassifier
@@ -50,6 +42,57 @@ def train_model(x, y, vectorizer, type_model='Tree'):
         model = MLPClassifier()
 
     model = model.fit(x_train, y_train)
+    return model
+
+
+def train_tensor_model(x, y, total_layers=2, first_dim_layer=1):
+    # Check the optional inputs format
+    if total_layers is not int or first_dim_layer is not int:
+        print("Bad format.")
+        return -1
+
+    from tensorflow import keras
+    from tensorflow.keras.layers import Dense
+    import numpy as np
+
+    # Prepare outputs: a binary class matrix
+    output_y = keras.utils.to_categorical(y)
+
+    # Get shape of vectors
+    shape_y = np.shape(output_y)[1]
+    shape_x = np.shape(x)[1]
+    dimensional_step = int((shape_y - first_dim_layer) / total_layers)
+
+    # Checks
+    if total_layers < 2:
+        print("Minimum layers = 2")
+        return -1
+    elif total_layers > shape_y:
+        print("Too many layers: there are more layers than questions.")
+        # shape_y cannot be lower than the number of layers
+        return -1
+    elif first_dim_layer >= shape_y:
+        print("The dimension of the first layer should be lower than the questions")
+        # first_dim_layer cannot be greater than the number of ids.
+        return -1
+    elif dimensional_step <= 0:
+        print("Too many layers for the dimensions we have")
+        return -1
+
+    # Create the model
+    model = keras.models.Sequential()
+    model.add(Dense(first_dim_layer, input_dim=shape_x, activation='relu'))
+
+    for dim in range(first_dim_layer, shape_y, dimensional_step):
+        model.add(Dense(dim, activation='relu'))
+
+    model.add(Dense(shape_y, activation='softmax'))
+
+    # Compile model
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+    # Fit the model
+    model.fit(x, output_y, epochs=150, batch_size=15, verbose=1)
     return model
 
 
@@ -85,7 +128,6 @@ def save_vector_and_model(vectorizer, model, model_name, type_vector, name_db):
     path_model = get_path_model(root_dir, type_model, model_short, type_db, type_vector)
 
     import pickle
-    # filename = "Vectorizer/CountVectorizer.pkl"
     pickle.dump(vectorizer, open(path_vector, 'wb'))
     pickle.dump(model, open(path_model, 'wb'))
 

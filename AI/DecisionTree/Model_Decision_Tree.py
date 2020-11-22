@@ -1,96 +1,22 @@
-import pandas as pd
-import os
-from sklearn.metrics import classification_report
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
 import DataBase.DB
 from AI import AI_Methods as A_m
 
 # In this script we will generate different Decision Trees Models.
 model_name = 'DT'
 type_vector = 'Count'
+# type_vector = 'tfidf'
 name_db = "first_db.db"
+
 # # Load questions from DB
 data = DataBase.DB.MyData("first_db.db")
-# questions_and_id_db = data.get_questions_and_id_dB()
-#
-# questions_db = []
-# y = []
-# for question in questions_and_id_db:
-#     questions_db.append(question[0])
-#     y.append(question[1])
-questions_db, y = A_m.load_questions_and_id(name_db)
 
-# # Counting
-# from sklearn.feature_extraction.text import CountVectorizer
-# vectorizer = CountVectorizer(strip_accents='ascii', lowercase=True, stop_words='english')
-# X = vectorizer.fit_transform(questions_db)
+questions_db, y = A_m.load_questions_and_id(name_db)
 
 X, vectorizer = A_m.get_x_and_vector(questions_db, type_vector)
 
 model = A_m.train_model(X, y, vectorizer)
 
 A_m.save_vector_and_model(vectorizer, model, model_name, type_vector, name_db)
-# # # Saving CountVectorizer
-# import pickle
-# filename = "Vectorizer/CountVectorizer.pkl"
-# pickle.dump(vectorizer, open(filename, 'wb'))
-#
-# results = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names())
-# results['Question_id'] = y  # Concatenate X and y
-#
-# # Saving Count_Results.csv
-# root_dir = os.path.dirname(os.path.abspath(os.curdir))
-# path = os.path.join(root_dir, "DecisionTree", "CSV_Results", "Count_Results.csv")
-# header = vectorizer.get_feature_names()
-# header.append("Question_id")
-# results.to_csv(path_or_buf=path, header=header, index=False)
-# results_id = results.pop("Question_id")
-
-
-# TFIDF
-# from sklearn.feature_extraction.text import TfidfVectorizer
-# vectorizer = TfidfVectorizer()
-# X = vectorizer.fit_transform(questions_db)
-#
-# # Saving TFIDFVectorizer
-# import pickle
-# filename = "DecisionTree/Vectorizer/TFIDFVectorizer.pkl"
-# pickle.dump(vectorizer, open(filename, 'wb'))
-#
-# results = pd.DataFrame(X.toarray(), columns=vectorizer.get_feature_names())
-# results['Question_id'] = y  # Concatenate X and y
-#
-# # Saving TFIDF_Results.csv
-# root_dir = os.path.dirname(os.path.abspath(os.curdir))
-# path = os.path.join(root_dir, "AI", "DecisionTree", "CSV_Results", "TFIDF_Results.csv")
-# header = vectorizer.get_feature_names()
-# header.append("Question_id")
-# results.to_csv(path_or_buf=path, header=header, index=False)
-# results_id = results.pop("Question_id")-
-
-# DecisionTreeClassifier()
-# X_train, X_test, y_train, y_test = train_test_split(results, results_id, test_size=0.4, random_state=42)
-# clf = DecisionTreeClassifier()
-# clf = clf.fit(X_train, y_train)
-#
-# y_pred = clf.predict(X_test)
-# print(classification_report(y_test, y_pred))
-# score = clf.score(X_test, y_test)
-# print("Score: ", score)
-# Print model.results
-# from sklearn import tree
-# from matplotlib import pyplot as plt
-# tree.plot_tree(clf, filled=True)
-# plt.show()
-
-# # Saving model
-# yes_no = input('Save?:')
-# if yes_no == 'y':
-#     # Save to file in the current working directory
-#     import pickle
-#     filename = "Models/Extended_DataBase/DT_Count_v2-1.pkl"
-#     pickle.dump(clf, open(filename, 'wb'))
 
 # Test
 text = ["merge in GitHub?"]

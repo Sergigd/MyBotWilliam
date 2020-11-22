@@ -69,15 +69,6 @@ def cosine_similarity(title_prep, question_prep):
     cosine = c / float((sum(vector_title) * sum(vector_question)) ** 0.5)
     return cosine
 
-#
-# def jaccard2_similarity(title_prep, question_prep):
-#     print(title_prep)
-#     print(question_prep)
-#
-#     score = jaccard_score(title_prep, question_prep, average="weighted")
-#     print(score)
-#     return score
-
 
 def jaccard_similarity(title_prep, question_prep):
     intersection = len(list(set(title_prep).intersection(question_prep)))
