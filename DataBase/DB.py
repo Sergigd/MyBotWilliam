@@ -1,7 +1,6 @@
 import sqlite3
 import os
 import rootpath
-import csv
 
 
 class MyData(object):
@@ -11,12 +10,10 @@ class MyData(object):
         self.conn = sqlite3.connect(self.path)
         self.cursor = self.conn.cursor()
 
-
-    # def clear_tables(self):
-    #     with self.conn:
-    #         self.cursor.execute("DELETE FROM questions")
-    #         self.cursor.execute("DELETE FROM answers")
-    #     self.cursor.execute("VACUUM")
+    def insert_extended_question(self, id_, title, link):
+        with self.conn:
+            self.cursor.execute("INSERT INTO questions VALUES (:id, :title, :generated_title, :link)",
+                                {'id': id_, 'title': title, 'generated_title': None, 'link': link})
 
     def insert_question(self, id_, title, link):
         with self.conn:
@@ -35,11 +32,19 @@ class MyData(object):
         self.cursor.execute("SELECT title FROM questions WHERE id=:id", {'id': id_})
         return self.cursor.fetchone()
 
+    def get_title_extended_by_id(self, id_):
+        self.cursor.execute("SELECT generated_title FROM questions WHERE id=:id", {'id': id_})
+        return self.cursor.fetchone()
+
     def get_link_by_id(self, id_):
         self.cursor.execute("SELECT link FROM questions WHERE id=:id", {'id': id_})
         return self.cursor.fetchone()
 
-    def is_question_title_in_DB(self, title):
+    def get_number_of_titles_with_id(self, id_):
+        self.cursor.execute("SELECT title FROM questions WHERE id=:id", {'id': id_})
+        return len(self.cursor.fetchall())
+
+    def is_question_title_in_db(self, title):
         self.cursor.execute("SELECT id FROM questions WHERE title=:title", {'title': title})
         if len(self.cursor.fetchall()) > 0:
             return True
@@ -50,7 +55,11 @@ class MyData(object):
         self.cursor.execute("SELECT COUNT(*) FROM answers")
         return self.cursor.fetchone()[0]
 
-    def get_questions_DB(self):
+    def get_last_question(self):
+        self.cursor.execute("SELECT COUNT(*) FROM questions")
+        return self.cursor.fetchone()[0]
+
+    def get_questions_db(self):
         questions_db = []
         id_ = 1
         while id_ < self.get_last_id():
@@ -58,7 +67,7 @@ class MyData(object):
             id_ += 1
         return questions_db
 
-    def get_questions_and_id_dB(self):
+    def get_questions_and_id_db(self):
         questions_db = []
         id_ = 1
         while id_ < self.get_last_id():
@@ -66,6 +75,29 @@ class MyData(object):
             questions_db.append(question)
             id_ += 1
         return questions_db
+
+    def get_questions_extended_id_db(self):
+        questions_db = []
+        id_ = 1
+        while id_ < self.get_last_id():
+            question = [str(self.get_title_by_id(id_)[0]), str(self.get_title_extended_by_id(id_)[0]), id_]
+            questions_db.append(question)
+            id_ += 1
+        return questions_db
+
+    def get_repeated_q_and_id(self, times):
+        import random
+        questions_db = []
+        i = 0
+        while i < times:
+            id_ = 1
+            while id_ < self.get_last_id():
+                question = [str(self.get_title_by_id(id_)[0]), id_]
+                questions_db.append(question)
+                id_ += 1
+            i += 1
+        random_duplicated = random.sample(questions_db, len(questions_db))
+        return random_duplicated
 
     def get_all_titles(self):
         self.conn.row_factory = lambda cursor, row: row[0]
@@ -78,8 +110,6 @@ class MyData(object):
         c = self.conn.cursor()
         c.execute("SELECT generated_title FROM questions")
         return c.fetchall()
-
-
 
     def get_all_ids(self):
         self.conn.row_factory = lambda cursor, row: row[0]
@@ -97,5 +127,4 @@ class MyData(object):
 
     def update_extended_question(self, id_, text):
         with self.conn:
-            # self.cursor.execute("UPDATE questions SET generated_title=NULL WHERE generated_title=''")
             self.cursor.execute("UPDATE questions SET generated_title=:text WHERE id=:id_", {'text': text, 'id_': id_})

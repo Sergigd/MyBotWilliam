@@ -6,7 +6,21 @@ import os
 def load_questions_and_id(name_db):
     import DataBase.DB
     data = DataBase.DB.MyData(name_db)
-    questions_and_id_db = data.get_questions_and_id_dB()
+    # questions_and_id_db = data.get_repeated_q_and_id(30)
+    questions_and_id_db = data.get_questions_and_id_db()
+
+    questions_db = []
+    y = []
+    for question in questions_and_id_db:
+        questions_db.append(question[0])
+        y.append(question[1])
+    return questions_db, y
+
+
+def load_repeated_questions_and_id(name_db, number):
+    import DataBase.DB
+    data = DataBase.DB.MyData(name_db)
+    questions_and_id_db = data.get_repeated_q_and_id(number)
 
     questions_db = []
     y = []
@@ -31,9 +45,6 @@ def get_x_and_vector(questions_db, type_vectorizer='Count'):
 
 
 def train_sk_model(x, y, type_model='Tree'):
-    from sklearn.model_selection import train_test_split
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.4, random_state=42)
-
     if type_model == 'Tree':
         from sklearn.tree import DecisionTreeClassifier
         model = DecisionTreeClassifier()
@@ -41,7 +52,7 @@ def train_sk_model(x, y, type_model='Tree'):
         from sklearn.neural_network import MLPClassifier
         model = MLPClassifier()
 
-    model = model.fit(x_train, y_train)
+    model = model.fit(x, y)
     return model
 
 
@@ -62,6 +73,7 @@ def train_tensor_model(x, y, total_layers=2, first_dim_layer=1):
     shape_y = np.shape(output_y)[1]
     shape_x = np.shape(x)[1]
     dimensional_step = int((shape_y - first_dim_layer) / total_layers)
+    theoretically_last_layer = dimensional_step * total_layers + first_dim_layer
 
     # Checks
     if total_layers < 2:
@@ -82,8 +94,10 @@ def train_tensor_model(x, y, total_layers=2, first_dim_layer=1):
     # Create the model
     model = keras.models.Sequential()
     model.add(Dense(first_dim_layer, input_dim=shape_x, activation='relu'))
+    # from tensorflow.keras.layers import Dropout
+    # model.add(Dropout(.2))
 
-    for dim in range(first_dim_layer, shape_y, dimensional_step):
+    for dim in range(first_dim_layer + dimensional_step, theoretically_last_layer - dimensional_step, dimensional_step):
         model.add(Dense(dim, activation='relu'))
 
     model.add(Dense(shape_y, activation='softmax'))
@@ -93,7 +107,15 @@ def train_tensor_model(x, y, total_layers=2, first_dim_layer=1):
 
     # Fit the model
     model.fit(x, output_y, epochs=150, batch_size=15, verbose=1)
-    return model
+
+    root_dir = rootpath.detect()
+    # name = "TFKeras_Count_Dropout" + str(total_layers) + "-" + str(first_dim_layer) + ".pkl"
+    name = "TFKeras_Count_" + str(total_layers) + "-" + str(first_dim_layer) + ".pkl"
+    path_model = os.path.join(root_dir, "AI", "Tensorflow", "Models", "Smote", "extended", name)
+
+    model.save(path_model)
+
+    return model, name
 
 
 def save_vector_and_model(vectorizer, model, model_name, type_vector, name_db):
@@ -112,15 +134,18 @@ def save_vector_and_model(vectorizer, model, model_name, type_vector, name_db):
 
     if name_db == 'first_db.db':
         type_db = 'first_db'
-        # type_db = 'First_DataBase'
     elif name_db == 'english_db.db':
-        type_db = 'Extended_DataBase'
+        type_db = 'english_db'
+    elif name_db == 'duplicated.db':
+        type_db = 'duplicated'
+    elif name_db == 'extended.db':
+        type_db = 'extended'
     else:
         print("No folder for this DataBase")
         return -1
 
     if type_vector == 'Count':
-        vector = 'CountVectorizer.pkl'
+        vector = 'DB_Vectorizer.pkl'
     elif type_vector == 'tfidf':
         vector = 'TFIDFVectorizer.pkl'
     else:
@@ -128,13 +153,16 @@ def save_vector_and_model(vectorizer, model, model_name, type_vector, name_db):
         return -1
 
     root_dir = rootpath.detect()
-    # path_vector = os.path.join(root_dir, 'AI', type_model, 'Vectorizer', type_db, vector)
-    path_vector = os.path.join(root_dir, 'AI', type_model, 'Vectorizer', "First_DataBase", vector)
+    path_vector = os.path.join(root_dir, 'AI', type_model, 'Vectorizer', type_db, vector)
     path_model = get_path_model(root_dir, type_model, model_short, type_db, type_vector)
 
     import pickle
+    if model_short == 'TFKeras':
+        model.save(path_model)
+    else:
+        pickle.dump(model, open(path_model, 'wb'))
+
     pickle.dump(vectorizer, open(path_vector, 'wb'))
-    pickle.dump(model, open(path_model, 'wb'))
 
     print("Model and vector saved")
     return 0
@@ -147,5 +175,9 @@ def get_path_model(root_dir, type_model, model_short, type_db, type_vector):
     models = [model for model in models_list if model.__contains__(type_vector)]
 
     model_version = len(models) + 1
-    model_name = model_short + '_' + type_vector + '_v' + str(model_version) + '.pkl'
+    if model_short == 'TF':
+        model_name = model_short + '_' + type_vector + '_v' + str(model_version) + '.h5'
+
+    else:
+        model_name = model_short + '_' + type_vector + '_v' + str(model_version) + '.pkl'
     return os.path.join(path, model_name)

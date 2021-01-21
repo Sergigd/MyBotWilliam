@@ -20,6 +20,22 @@ def read_questions_similar():
     return questions_similar
 
 
+def read_questions_similar_with_check():
+    # Reading the data
+    questions_similar = []
+    root_dir = os.path.dirname(os.path.abspath(os.curdir))
+    if root_dir.__contains__("AI"):
+        path = os.path.join(root_dir, "Distance", "Similar_Questions_With_Original.txt")
+    else:
+        path = os.path.join(root_dir, "AI", "Distance", "Similar_Questions_With_Original.txt")
+    with open(path) as f:
+        for line in f:
+            line = str(line).lower().replace("\n", "", -1)
+            split = line.split("//")
+            questions_similar.append(split)
+    return questions_similar
+
+
 def get_answer_by_id(_id, name_db):
     data = DB.MyData(name_db)
     return str(data.get_answers_by_id(_id)[0])
@@ -46,7 +62,6 @@ def prepare_sentence(sentence):
 
 
 def cosine_similarity(title_prep, question_prep):
-
     vector_title = []
     vector_question = []
     r_vector = set().union(*[tuple(title_prep), tuple(question_prep)])
@@ -64,8 +79,10 @@ def cosine_similarity(title_prep, question_prep):
 
     # cosine formula: Similarity = (A.B) / (||A||.||B||) where A and B are vectors.
     c = 0
+    vecc = []
     for i in range(len(r_vector)):
         c += vector_title[i] * vector_question[i]
+        vecc.append(vector_title[i] * vector_question[i])
     cosine = c / float((sum(vector_title) * sum(vector_question)) ** 0.5)
     return cosine
 
@@ -83,11 +100,15 @@ def select_response(title, questions, method="cosine"):
     if method == "cosine":
         # cosine similarity:
         for question in questions:
+            with open("file_for_memoria.txt", 'a+') as f:
+                f.writelines(str(question))
             question_prepared = prepare_sentence(question)
             cosine = cosine_similarity(title_prepared, question_prepared)
             similarity_indexes.append(cosine)
     elif method == "jaccard":
         for question in questions:
+            with open("file_for_memoria.txt", 'a+') as f:
+                f.writelines(str(question))
             question_prepared = prepare_sentence(question)
             jaccard = jaccard_similarity(title_prepared, question_prepared)
             similarity_indexes.append(jaccard)
@@ -107,7 +128,7 @@ def select_response(title, questions, method="cosine"):
 
         print(title)
         print(questions[index])
-        # print(get_answer_by_id(_id=index + 1, name_db=name_db))
+        return str(questions[index]).lower()
 
 
 def extract_comas(sentence):

@@ -1,13 +1,18 @@
 import pickle
-import os
+import time
 from AI.Distance import Distance_Methods as Nlp
 from tensorflow import keras
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import *
+from DataBase.DB import MyData
+
 
 # In this script we'll compare all the models in AI in order to check which model has more accuracy.
-type_db = "First_DataBase"
+
+# select dataBase
+type_db = "english_db"  # extended, duplicated, first_db
+db = MyData(type_db + ".db")
 
 # Path_list
 root_dir = os.path.dirname(os.path.abspath(os.curdir))
@@ -20,11 +25,12 @@ path_TFK = os.path.join(path_AI, "Tensorflow", "Models", type_db)
 path_list = [path_DT, path_NN, path_TFK]
 
 # Loading Test Questions from Test_Similar_Questions.txt
-questions_similar = Nlp.read_questions_similar()
+questions_similar = Nlp.read_questions_similar_with_check()
 
 # Get the accuracy for each model: model, good, attempts, accuracy
 model_good_att_acc = []
 for path in path_list:
+    time_start = time.time()
     # Files:
     models_list = os.listdir(path)
 
@@ -59,26 +65,32 @@ for path in path_list:
         good = 0
         attempts = 0
         for question in questions_similar:
-            question_x = vectorizer.transform([question])
+            question_x = vectorizer.transform([question[0]])
             predict_index = loaded_model.predict(question_x)
             if folder == "Tensorflow":
                 max_predict = max(predict_index[0])
+                index = ""
                 for index, value in enumerate(predict_index[0]):
                     if value == max_predict:
                         break
-                title = questions_similar[index - 1]
+                title_db = db.get_title_by_id(index)[0]
             else:
-                title = questions_similar[predict_index[0] - 1]
+                title_db = db.get_title_by_id(int(predict_index[0]))[0]
             attempts += 1
-            if question == title:
+            if question[1] == str(title_db).lower():
                 good += 1
+            else:
+                print("Question = ", question[1], "\n Question_predicted = ", str(title_db).lower())
+        time_finish = time.time()
+        time_model = time_finish - time_start
 
         # Save model_name, good, attempts, accuracy
         accuracy = good/attempts
-        model_name = model_path.replace(path_AI, "", -1).replace("\\Models\\First_DataBase\\", "", -1)\
+        model_name = model_path.replace(path_AI, "", -1).replace("\\Models\\" + type_db + "\\", "", -1)\
             .replace("\\", "", -1).replace("DecisionTree", "", -1).replace("NeuralNet", "", -1).replace(".pkl", "", -1)\
             .replace("Tensorflow", "", -1)
         model_good_att_acc.append([model_name, good, attempts, accuracy*100])
+        print(model_name, ": time = ", time_model, " Good = ", good, " accuracy = ", accuracy)
 
 # Which is the model with most accuracy
 index = [0]

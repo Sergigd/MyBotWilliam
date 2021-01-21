@@ -12,9 +12,7 @@ def get_app_key():
 
 
 def get_access_token():
-    # url = "https://stackexchange.com/oauth/dialog?client_id={" \
-    #       "0}&scope=&redirect_uri=https://stackexchange.com/oauth/login_success/".format(get_client_id())
-    # print(url)
+    # This string changes with time
     return "aZrdUopB9QJe04F30Pmt1w))"
 
 
@@ -50,7 +48,7 @@ def get_text_accepted_answer(single_question):
         else:
             return -1
     except Exception as e:
-        # print("Exception: ", e)
+        print("Exception in get_text_accepted_answer: ", e)
         return -1
 
 
@@ -60,24 +58,14 @@ def souping_text_answer(link_question, id_answer):
         soup = BeautifulSoup(source, 'lxml')
         answer = soup.find("div", class_="answer accepted-answer")
         post_text = answer.find("div", class_="s-prose js-post-body")
-        # answer = soup.find(id="answer-{}".format(id_answer))
-        # post_text = answer.find(class_="post-layout")
         text = "" + post_text.get_text()
-        # print(text)
         return text
 
     except Exception as e:
-        # print("Exception: ", e)
+        print("Exception in souping_text_answer\nCheck for the html format in the web page!\n ", e)
         return
 
 
 def get_link_answer(link_question, answer_id):
     return "" + link_question + "#" + str(answer_id)
 
-
-
-class QuestionAndAnswer:
-    def __init__(self, title, text_answer, link):
-        self.title = title
-        self.text_answer = text_answer
-        self.link = link

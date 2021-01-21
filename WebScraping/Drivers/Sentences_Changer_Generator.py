@@ -1,25 +1,24 @@
 """
 In this script we will append text generated in https://web-hobbies.com/en/tools/sentences-changer-generator/ to our
-extended_english_db.db in order to generate better models
+extended.db in order to generate better models.
 """
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-
 from AI.Distance import Modify_Strings_Methods as Mds
 from DataBase import DB
 import os
 import time
 
 
-# Path to opera driver
+# Path to opera driver. You should change the driver according to your web browser
 root_dir = os.path.dirname(os.path.abspath(os.curdir))
 path_opera = os.path.join(root_dir, "Drivers", "operadriver.exe")
 
 # Database to append generated questions
-db = DB.MyData("extended_english_db.db")
+db = DB.MyData("extended.db")
 
 throw_exception = []
 count = 0
@@ -48,8 +47,7 @@ try:  # Extract url process
             time.sleep(2)
             myElem = WebDriverWait(driver, timeout=10).until(EC.presence_of_element_located((By.ID, 'rewordtext')))
             print("Myelem: ", myElem.get_attribute("value"))
-            # WebDriverWait.until(driver.find_element_by_id("rewordtext"))
-            # driver.implicitly_wait(10)
+
             reword = driver.find_element_by_id("rewordtext")
             text = reword.get_attribute("value")
 

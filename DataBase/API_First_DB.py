@@ -113,7 +113,7 @@ if questions_and_answers is not None:
     data = DB.MyData("first_db.db")
     for question_and_answer in questions_and_answers:
         # Checks:
-        if not data.is_question_title_in_DB(question_and_answer.title):
+        if not data.is_question_title_in_db(question_and_answer.title):
             data.insert_question(id_=data.get_last_id() + 1,
                                  title=question_and_answer.title,
                                  link=question_and_answer.link)

@@ -1,0 +1,30 @@
+How to close the android keyboard?//Close/hide android soft keyboard
+Git problems: how to merge?//How to resolve merge conflicts in Git
+I want to rename a git branch//How do I rename a local Git branch?
+Check an email address validity in JavaScript//How to validate an email address in JavaScript
+How to distinguish between URI, URL and URN//What is the difference between a URI, a URL and a URN?
+Not use not null statements//Avoiding != null statements
+Compound assignments in Java don't require casting?//Why don't Java's +=, -=, *=, /= compound assignment operators require casting?
+Which I should implement: var functionName = function() or function functionName()//var functionName = function() {} vs function functionName() {}
+Revert changes in a file to a specific version?//How can I reset or revert a file to a specific revision?
+Is possible in Git clone all branches?//How to clone all remote branches in Git?
+"-->" in C++//What is the "-->" operator in C++?
+What are "px", "dip", "dp" and "sp"?//What is the difference between "px", "dip", "dp" and "sp"?
+String or string in C#?//What is the difference between String and string in C#?
+Which is the maximum allowed length in a URL?//What is the maximum length of a URL in different browsers?
+Docker vs a virtual machine?//How is Docker different from a virtual machine?
+Obtain a timestamp in JavaScript//How do you get a timestamp in JavaScript?
+Create a nested directory//How can I safely create a nested directory?
+Remove items from arrays//How can I remove a specific item from an array?
+Stack vs heap//What and where are the stack and heap?
+Undo commits in Git//How do I undo the most recent local commits in Git?
+Check remote Git branch//How do I check out a remote Git branch?
+Command with Python//Calling an external command from Python
+Modify properties from an object in JavaScript//How do I remove a property from a JavaScript object?
+Static methods vs class methods//Difference between staticmethod and classmethod
+Clone an object in JavaScript//What is the most efficient way to deep clone an object in JavaScript?
+Why should I use "use strict" in JavaScript//What does "use strict" do in JavaScript, and what is the reasoning behind it?
+Push a new branch to a remote Git//How do I push a new local branch to a remote Git repository and track it too?
+Is possible to merge two dictionaries in a single expression? (Python)//How do I merge two dictionaries in a single expression in Python?
+Substring method in a Python string//Does Python have a string 'contains' substring method?
+Python metaclasses: what are and how to use them//What are metaclasses in Python?
