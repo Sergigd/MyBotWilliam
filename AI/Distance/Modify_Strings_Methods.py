@@ -32,6 +32,7 @@ def url_changer_text(sentence="Testing"):
     return "https://web-hobbies.com/en/tools/sentences-changer-generator/?text=" + sentence + \
                "&indice=0&isCapital=false&PosNeg=1"
 
+
 def modify_title(sentence="Testing"):
     sentence = sentence.replace('&quot;', '\"')
     sentence = sentence.replace("&#39;", "'", -1)
