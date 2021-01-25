@@ -42,7 +42,7 @@ quit_list = ["q", "quit", "break"]
 
 while True:
     print("Please, insert yor question: ")
-    question = input()
+    question = input().lower()
     if not quit_list.__contains__(question):
         william_response(question)
     else:
