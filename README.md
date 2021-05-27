@@ -1,5 +1,5 @@
 # MyBotWilliam
-This is a chatbot with AI connected to a DB. The purpose of this bot is to solve problems of programming studients.
+This is a chatbot with AI connected to a DB. The purpose of this bot is to solve problems of programming students.
 
 His AI is a Neural Net model created with Sklearn library. The DataBase was created with the StackOverflow API.
 

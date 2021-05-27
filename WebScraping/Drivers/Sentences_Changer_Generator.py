@@ -5,7 +5,7 @@ extended.db in order to generate better models.
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 from AI.Distance import Modify_Strings_Methods as Mds
 from DataBase import DB
@@ -45,8 +45,8 @@ try:  # Extract url process
             driver = webdriver.Opera(executable_path=path_opera)
             driver.get(url)
             time.sleep(2)
-            myElem = WebDriverWait(driver, timeout=10).until(EC.presence_of_element_located((By.ID, 'rewordtext')))
-            print("Myelem: ", myElem.get_attribute("value"))
+            myElem = WebDriverWait(driver, timeout=10).until(ec.presence_of_element_located((By.ID, 'rewordtext')))
+            print("My elem: ", myElem.get_attribute("value"))
 
             reword = driver.find_element_by_id("rewordtext")
             text = reword.get_attribute("value")
@@ -60,10 +60,10 @@ try:  # Extract url process
             else:
                 raise ValueError("text = ", text)
 
-        except Exception as e2:
-            print("Exception in scraping process: ", e2)
         except ValueError as v:
             print("Exception in scraping process: (value error) ", v)
+        except Exception as e2:
+            print("Exception in scraping process: ", e2)
         except TimeoutException:
             print("Loading took too much time!")
         finally:
